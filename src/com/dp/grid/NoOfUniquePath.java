@@ -12,6 +12,8 @@ public class NoOfUniquePath {
 
     /**
      * *  Recursion on global variable
+     * * Time 2^(m*n)
+     * * Space : O(m*n)
      */
     public int uniquePaths(int m, int n) {
         int[][] matrix = new int[m][n];
@@ -35,6 +37,8 @@ public class NoOfUniquePath {
     }
 
     /**
+     * * * Time 2^(m*n)
+     * Top to bottom recursion
      * *  Recursion on without global variable
      * * When ever i add global variable, I won't be able to use Memorization
      */
@@ -54,10 +58,57 @@ public class NoOfUniquePath {
             return 1;
         }
 
-        // Moving Right direction
+        // Moving Right direction                               // Moving Downward direction
         return totalNoOfUniquePath1(matrix, row, col + 1) + totalNoOfUniquePath1(matrix, row + 1, col);
+    }
 
-        // Moving Downward direction
+    /**
+     * Time 2^(m*n)
+     * Bottom up recursion Approach
+     * *  Recursion on without global variable
+     * *  When ever i add global variable, I won't be able to use Memorization
+     */
+    public int uniquePathsRecursionBottomUp(int m, int n) {
+        int[][] matrix = new int[m][n];
+        return uniquePathsRecursionBottomUp(matrix, m - 1, n - 1);
+    }
+
+    public int uniquePathsRecursionBottomUp(int[][] matrix, int row, int col) {
+        if (row == 0 && col == 0)
+            return 1;
+
+        if (row < 0 || col < 0)
+            return 0;
+
+
+        // Moving Left direction                                       // Moving up direction
+        return uniquePathsRecursionBottomUp(matrix, row, col - 1) + uniquePathsRecursionBottomUp(matrix, row - 1, col);
+    }
+
+
+    /**
+     * Bottom up Memorization recursion Approach
+     * *  Recursion on without global variable
+     * *  When ever I add global variable, I won't be able to use Memorization
+     */
+    public int uniquePathsBottomUpMemorization(int m, int n) {
+        int[][] matrix = new int[m][n];
+        return uniquePathsRecursionBottomUp(matrix, m - 1, n - 1);
+    }
+
+    public int uniquePathsBottomUpMemorization(int[][] matrix, int row, int col) {
+
+        if (row == 0 && col == 0)
+            return 1;
+
+        if (row < 0 || col < 0)
+            return 0;
+
+        if (matrix[row][col] != 0)
+            return matrix[row][col];
+
+        // Moving Left direction                                                               // Moving up direction
+        return matrix[row][col] = uniquePathsBottomUpMemorization(matrix, row, col - 1) + uniquePathsBottomUpMemorization(matrix, row - 1, col);
     }
 
 
@@ -142,7 +193,60 @@ public class NoOfUniquePath {
         return matrix[m - 1][n - 1];
     }
 
+
+    /**
+     * * DP
+     * * Time Complexity: O(m * n)
+     * * Space : O(n) + O(n) = O(n)
+     *
+     * @param m
+     * @param n
+     * @return
+     */
+    public int uniquePathsDPSpaceOptimization(int m, int n) {
+        int[] dp = new int[n];
+        for (int i = 0; i < dp.length; i++)
+            dp[i] = 1;
+
+        int[] currentRows = new int[n];
+
+        for (int i = 1; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                int left = (j - 1 < 0) ? 0 : currentRows[j - 1];
+                int top = dp[j];
+                currentRows[j] = left + top;
+            }
+            dp = currentRows;
+            currentRows = new int[n];
+        }
+        return dp[n - 1];
+    }
+
+    /**
+     * * DP
+     * * Time Complexity: O(m * n)
+     * * Space : O(n)
+     * Replaced two array into single the same array dp stores old state as well
+     *
+     * @param m
+     * @param n
+     * @return
+     */
+    public int uniquePathsDPSpaceOptimization2(int m, int n) {
+        int[] dp = new int[n];
+        for (int i = 0; i < dp.length; i++)
+            dp[i] = 1;
+
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                dp[j] = dp[j] + dp[j - 1];
+            }
+        }
+        return dp[n - 1];
+    }
+
     public static void main(String[] args) {
+
         Utils.printHeadLine("Recursion with global variable");
         NoOfUniquePath obj = new NoOfUniquePath();
         System.out.println(obj.uniquePaths(3, 3));
@@ -169,7 +273,28 @@ public class NoOfUniquePath {
         System.out.println(obj.uniquePathsDP(3, 7));
         System.out.println(obj.uniquePathsDP(3, 2));
 
+        Utils.printHeadLine("Bottom up Recursion");
+        System.out.println(obj.uniquePathsRecursionBottomUp(3, 3));
+        System.out.println(obj.uniquePathsRecursionBottomUp(3, 7));
+        System.out.println(obj.uniquePathsRecursionBottomUp(3, 2));
+
+        Utils.printHeadLine("Bottom up memorization");
+        System.out.println(obj.uniquePathsBottomUpMemorization(3, 3));
+        System.out.println(obj.uniquePathsBottomUpMemorization(3, 7));
+        System.out.println(obj.uniquePathsBottomUpMemorization(3, 2));
+
+        Utils.printHeadLine("DP space optimized");
+        System.out.println(obj.uniquePathsDPSpaceOptimization(3, 3));
+        System.out.println(obj.uniquePathsDPSpaceOptimization(3, 7));
+        System.out.println(obj.uniquePathsDPSpaceOptimization(3, 2));
+
+        Utils.printHeadLine("DP space more optimized");
+        System.out.println(obj.uniquePathsDPSpaceOptimization2(3, 3));
+        System.out.println(obj.uniquePathsDPSpaceOptimization2(3, 7));
+        System.out.println(obj.uniquePathsDPSpaceOptimization2(3, 2));
+        
     }
+
 
 }
 
