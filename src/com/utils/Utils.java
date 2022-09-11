@@ -134,4 +134,8 @@ public class Utils {
         System.out.println(obj);
     }
 
+    public static void printHeadLine(String headLine){
+        System.out.println("*****************------ "+ headLine + " ------*****************");
+    }
+
 }
