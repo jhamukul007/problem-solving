@@ -3,6 +3,7 @@ package com.tries;
 import com.utils.TriesNode;
 
 public class WordSearch {
+
     TriesNode root;
 
     public WordSearch() {
@@ -64,20 +65,10 @@ public class WordSearch {
         String s3 = "MUKU";
         WordSearch obj = new WordSearch();
 
-//        obj.insert(s);
-//        obj.insert(s1);
-//        obj.insert(s3);
-//        obj.delete(s1);
-//        System.out.println(obj.search("MUKES", true));
-        Boolean[] bool = new Boolean[4];
-        for (Boolean b : bool) {
-            System.out.println(b);
-        }
+        obj.insert(s);
+        obj.insert(s1);
+        obj.insert(s3);
+        obj.delete(s1);
+        System.out.println(obj.search("MUKES", true));
     }
-
-    /**
-     * MUKUL
-     */
-
-
 }
