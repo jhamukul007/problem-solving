@@ -4,6 +4,7 @@ import com.design.patterns.factory.NotificationMessage;
 import com.design.patterns.factory.NotificationService;
 
 public class PushNotificationService implements NotificationService {
+
     @Override
     public void notify(NotificationMessage message) {
         PushNotificationMessage pushMessage = (PushNotificationMessage) message;
